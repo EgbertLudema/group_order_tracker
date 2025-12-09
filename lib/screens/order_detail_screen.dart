@@ -102,19 +102,45 @@ class _OrderDetailScreenState extends State<OrderDetailScreen> {
 
     Map<String, int> _buildOrderList(List<OrderItem> items) {
         final Map<String, int> result = {};
+
         for (final orderItem in items) {
             if (orderItem.itemId.isEmpty) {
                 continue;
             }
+
             final itemDef = ItemRepository.findById(orderItem.itemId);
             if (itemDef == null) {
                 continue;
             }
-            final key = itemDef.name;
-            result[key] = (result[key] ?? 0) + orderItem.amount;
+
+            // Collect option names for this row
+            final List<String> optionNames = [];
+            for (final optionId in orderItem.optionIds) {
+                final option = ItemRepository.findOptionById(
+                    orderItem.itemId,
+                    optionId,
+                );
+                if (option != null) {
+                    optionNames.add(option.name);
+                }
+            }
+
+            // Sort so &ldquo;Fries + Curry + Mayo&rdquo; and &ldquo;Fries + Mayo + Curry&rdquo; become the same key
+            optionNames.sort();
+
+            // Build label for Table 2: &ldquo;Fries&rdquo;, &ldquo;Fries Curry&rdquo;, &ldquo;Fries Curry, Mayo&rdquo;, etc.
+            String label = itemDef.name;
+            if (optionNames.isNotEmpty) {
+                label += " ${optionNames.join(", ")}";
+            }
+
+            // Aggregate by label
+            result[label] = (result[label] ?? 0) + orderItem.amount;
         }
+
         return result;
     }
+
 
     List<PersonCostRow> _buildPersonCosts(Order order) {
         final Map<String, List<OrderItem>> itemsPerPerson = {};
