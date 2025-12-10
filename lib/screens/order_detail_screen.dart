@@ -348,30 +348,27 @@ class _OrderDetailScreenState extends State<OrderDetailScreen> {
                                                 child: Text(
                                                     "Amount",
                                                     style: TextStyle(
-                                                        fontWeight:
-                                                            FontWeight.bold,
+                                                        fontWeight: FontWeight.bold,
                                                     ),
                                                 ),
                                             ),
                                             SizedBox(width: 8),
                                             SizedBox(
-                                                width: 160,
+                                                width: 200,
                                                 child: Text(
                                                     "Item",
                                                     style: TextStyle(
-                                                        fontWeight:
-                                                            FontWeight.bold,
+                                                        fontWeight: FontWeight.bold,
                                                     ),
                                                 ),
                                             ),
                                             SizedBox(width: 8),
                                             SizedBox(
-                                                width: 160,
+                                                width: 200,
                                                 child: Text(
                                                     "Person",
                                                     style: TextStyle(
-                                                        fontWeight:
-                                                            FontWeight.bold,
+                                                        fontWeight: FontWeight.bold,
                                                     ),
                                                 ),
                                             ),
@@ -468,7 +465,8 @@ class _OrderDetailScreenState extends State<OrderDetailScreen> {
                                                         ),
                                                     ),
                                                     const SizedBox(width: 8),
-                                                    // Item dropdown (no Expanded, fixed width for scrollable row)
+
+                                                    // Item dropdown (fixed width, long text truncated)
                                                     SizedBox(
                                                         width: 200,
                                                         child:
@@ -483,10 +481,19 @@ class _OrderDetailScreenState extends State<OrderDetailScreen> {
                                                                 items: items
                                                                     .map(
                                                                         (item) =>
-                                                                            DropdownMenuItem(
-                                                                                value: item.id,
-                                                                                child: Text(
+                                                                            DropdownMenuItem<
+                                                                                String>(
+                                                                                value: item
+                                                                                    .id,
+                                                                                child:
+                                                                                    Text(
                                                                                     "${item.name} (${item.price.toStringAsFixed(2)} €)",
+                                                                                    maxLines:
+                                                                                        1,
+                                                                                    overflow:
+                                                                                        TextOverflow.ellipsis,
+                                                                                    softWrap:
+                                                                                        false,
                                                                                 ),
                                                                             ),
                                                                     )
@@ -499,6 +506,7 @@ class _OrderDetailScreenState extends State<OrderDetailScreen> {
                                                                     OutlineInputBorder(),
                                                                 isDense: true,
                                                                 ),
+                                                                isExpanded: true,
                                                                 onChanged:
                                                                     (value) async {
                                                                 setState(
@@ -533,7 +541,8 @@ class _OrderDetailScreenState extends State<OrderDetailScreen> {
                                                             ),
                                                     ),
                                                     const SizedBox(width: 8),
-                                                    // Person dropdown (no Expanded, fixed width)
+
+                                                    // Person dropdown (fixed width, long text truncated)
                                                     SizedBox(
                                                         width: 200,
                                                         child:
@@ -548,10 +557,20 @@ class _OrderDetailScreenState extends State<OrderDetailScreen> {
                                                                 items: persons
                                                                     .map(
                                                                         (person) =>
-                                                                            DropdownMenuItem(
-                                                                                value: person.name,
-                                                                                child: Text(
-                                                                                    person.name,
+                                                                            DropdownMenuItem<
+                                                                                String>(
+                                                                                value: person
+                                                                                    .name,
+                                                                                child:
+                                                                                    Text(
+                                                                                    person
+                                                                                        .name,
+                                                                                    maxLines:
+                                                                                        1,
+                                                                                    overflow:
+                                                                                        TextOverflow.ellipsis,
+                                                                                    softWrap:
+                                                                                        false,
                                                                                 ),
                                                                             ),
                                                                     )
@@ -564,6 +583,7 @@ class _OrderDetailScreenState extends State<OrderDetailScreen> {
                                                                     OutlineInputBorder(),
                                                                 isDense: true,
                                                                 ),
+                                                                isExpanded: true,
                                                                 onChanged:
                                                                     (value) {
                                                                 setState(
@@ -580,7 +600,11 @@ class _OrderDetailScreenState extends State<OrderDetailScreen> {
                                                             ),
                                                     ),
                                                     const SizedBox(width: 4),
+
                                                     Column(
+                                                        crossAxisAlignment:
+                                                            CrossAxisAlignment
+                                                                .start,
                                                         children: [
                                                             IconButton(
                                                                 onPressed: () =>
@@ -590,8 +614,8 @@ class _OrderDetailScreenState extends State<OrderDetailScreen> {
                                                                 icon: const Icon(
                                                                     Icons
                                                                         .delete_outline,
-                                                                    color:
-                                                                        Colors.red,
+                                                                    color: Colors
+                                                                        .red,
                                                                 ),
                                                             ),
                                                             const SizedBox(
@@ -661,8 +685,6 @@ class _OrderDetailScreenState extends State<OrderDetailScreen> {
             ),
         );
     }
-
-
 
     Widget _buildGeneratedOrderTable(Map<String, int> orderList) {
         return Card(
